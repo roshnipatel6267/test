@@ -1,0 +1,23 @@
+trigger:
+- none
+
+stages:
+- stage: First_Stage
+  jobs:
+  - job: First_Stage_Job
+    pool: 'ubuntu-latest'
+    steps:
+    - task: ManualValidation@0
+      inputs:
+        notifyUsers: 'kishan.patel1@einfochips.com'
+        instructions: 'Approve'
+  
+- stage: Second_Stage
+  dependsOn: First_Stage
+  jobs:
+  - job: Second_Stage_Job
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - script: 
+         echo "Hello"
