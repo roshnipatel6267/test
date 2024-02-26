@@ -9,7 +9,7 @@ stages:
     steps:
     - task: ManualValidation@0
       inputs:
-        notifyUsers: 'kishan.patel1@einfochips.com'
+        notifyUsers: 'roshni.patel@einfochips.com'
         instructions: 'Approve'
   
 - stage: Second_Stage
