@@ -5,7 +5,7 @@ stages:
 - stage: First_Stage
   jobs:
   - job: First_Stage_Job
-    pool: 'ubuntu-latest'
+    pool: server
     steps:
     - task: ManualValidation@0
       inputs:
