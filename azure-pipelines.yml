@@ -6,7 +6,7 @@ pool:
 
 variables:
   acrName: 'roshniacr'
-  #imageRepository: 'rosy69092'
+  imageRepository: 'test' # Replace with your actual repository name
   tags: '$(Build.BuildId)'
   vmImage: 'ubuntu-latest'
   acrLoginServer: 'roshniacr.azurecr.io'
