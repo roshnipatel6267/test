@@ -6,7 +6,7 @@ pool:
 
 variables:
   acrName: 'roshniacr'
-  imageRepository: 'rosy69092'
+  imageRepository: 'https://github.com/roshnipatel6267/test.git'
   tags: '$(Build.BuildId)'
   vmImage: 'ubuntu-latest'
   acrLoginServer: 'roshniacr.azurecr.io'
