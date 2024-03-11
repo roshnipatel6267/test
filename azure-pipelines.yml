@@ -25,13 +25,11 @@ stages:
     pool:
       vmImage: $(vmImage)
     steps:
-    - task: Docker@2
-      inputs:
-        containerRegistry: '$(acrLoginServer)'
-        repository: '$(acrLoginServer)/$(imageRepository)'
-        command: 'buildAndPush'
-        Dockerfile: '**/Dockerfile'
-        tags: '$(tags)'
+    - script: |
+        echo "$(acrPassword)" | docker login -u "$(acrUsername)" --password-stdin "$(acrLoginServer)"
+        docker build -f Dockerfile -t "$(acrLoginServer)/$(imageRepository):$(tags)" .
+        docker push "$(acrLoginServer)/$(imageRepository):$(tags)"
+      displayName: 'Build and Push'
 
 - stage: Deploy
   displayName: 'Deploy stage'
