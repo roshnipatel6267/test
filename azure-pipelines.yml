@@ -10,7 +10,7 @@ variables:
   tags: '$(Build.BuildId)'
   vmImage: 'ubuntu-latest'
   acrLoginServer: 'roshniacr.azurecr.io'  # Use $(acrName) directly
-  acrUsername: '$(acrUsername)'  # Use $(acrName) directly
+  acrUsername: '$(acrName)'  # Use $(acrName) directly
   acrPassword: '$(acrPassword)' # Use $(acrPassword) directly
   k8sCluster: 'https://test-roshni.api.server'
   k8sNamespace: 'default'
