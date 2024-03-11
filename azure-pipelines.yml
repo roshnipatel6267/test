@@ -26,9 +26,9 @@ stages:
       vmImage: $(vmImage)
     steps:
     - script: |
-        docker login -u $(acrUsername) -p $(acrPassword) $(acrLoginServer)
-        docker build -f Dockerfile -t $(acrLoginServer)/$(imageRepository):$(tags) .
-        docker push $(acrLoginServer)/$(imageRepository):$(tags)
+        echo "$(acrPassword)" | docker login -u "$(acrUsername)" --password-stdin "$(acrLoginServer)"
+        docker build -f Dockerfile -t "$(acrLoginServer)/$(imageRepository):$(tags)" .
+        docker push "$(acrLoginServer)/$(imageRepository):$(tags)"
       displayName: 'Build and Push'
 
 - stage: Deploy
