@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
       - name: test-app
-        #image: roshniacr.azurecr.io/rosy69092@sha256:07799fe52ad05297109b9ca8167692ee9010cc0f4ea45d92ec62dae1437f9f9f
-        image: nginx
+        image: roshniacr.azurecr.io/rosy69092@sha256:07799fe52ad05297109b9ca8167692ee9010cc0f4ea45d92ec62dae1437f9f9f
+        #image: nginx
         resources:
           limits:
             memory: "256Mi"  # Adjust based on your application's requirements
