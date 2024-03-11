@@ -9,9 +9,9 @@ variables:
   imageRepository: 'test' 
   tags: '$(Build.BuildId)'
   vmImage: 'ubuntu-latest'
-  acrLoginServer: 'roshniacr.azurecr.io'
-  acrUsername: 'roshniacr'
-  acrPassword: '0hMf0dVaG0ItqzkQYNnBeqTm0KreVbjG9RHn1Ky3zg+ACRA+1ULC'
+  acrLoginServer: '$(acrLoginServer)'
+  acrUsername: '$(acrUsername)'
+  acrPassword: '$(acrPassword)'
   k8sCluster: 'https://test-roshni.api.server'
   k8sNamespace: 'default'
   k8sManifestsPath: '$(Build.SourcesDirectory)/manifests'
@@ -60,7 +60,7 @@ stages:
 
         # Authenticate with Azure using service principal
         az login 
-        az aks get-credentials --resource-group sa1_test_eic_TejalDave --name test-roshni
+        az aks get-credentials --resource-group $(resource-group) --name test-roshni
 
         # Deploy to Kubernetes
         kubectl apply -f $(k8sManifestsPath)/deploy.yml -n $(k8sNamespace)
