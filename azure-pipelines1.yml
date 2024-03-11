@@ -9,9 +9,9 @@ variables:
   imageRepository: 'test' 
   tags: '$(Build.BuildId)'
   vmImage: 'ubuntu-latest'
-  acrLoginServer: 'roshniacr.azurecr.io'
-  acrUsername: '$(acrUsername)'  # Replace with your actual ACR username
-  acrPassword: '$(acrPassword)'  # Replace with your actual ACR password
+  acrLoginServer: 'roshniacr.azurecr.io'  # Use $(acrName) directly
+  acrUsername: '$(acrName)'  # Use $(acrName) directly
+  acrPassword: '$(acrPassword)' # Use $(acrPassword) directly
   k8sCluster: 'https://test-roshni.api.server'
   k8sNamespace: 'default'
   k8sManifestsPath: '$(Build.SourcesDirectory)/manifests'
