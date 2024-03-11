@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: acr-credentials
+type: kubernetes.io/dockerconfigjson
+data:
+  .dockerconfigjson: "ewoJImF1dGhzIjogewoJCSJyb3NobmlhY3IuYXp1cmVjci5pbyI6IHsKCQkJImF1dGgiOiAiY205emFHNXBZV055T2pCb1RXWXdaRlpoUnpCSmRIRjZhMUZaVG01Q1pYRlViVEJMY21WV1ltcEhPVkpJYmpGTGVUTjZaeXRCUTFKQkt6RlZURU09IgoJCX0KCX0KfQ=="
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: test-app
+  template:
+    metadata:
+      labels:
+        app: test-app
+    spec:
+      containers:
+      - name: test-app
+        image: roshniacr.azurecr.io/rosy69092@sha256:07799fe52ad05297109b9ca8167692ee9010cc0f4ea45d92ec62dae1437f9f9f
+        imagePullSecrets:
+      - name: acr-credentials

@@ -40,7 +40,30 @@ stages:
     pool:
       vmImage: $(vmImage)
     steps:
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '3.x'
+        installationPath: $(Agent.ToolsDirectory)/dotnet
+
+    - checkout: self
+
     - script: |
+        # Ensure kubectl is available
+        sudo az aks install-cli
+
+        # Set kubeconfig to the correct path
+        export KUBECONFIG=$(Agent.BuildDirectory)/kubeconfig
+
+        # Print kubeconfig for debugging
+        cat $(Agent.BuildDirectory)/kubeconfig
+
+        # Authenticate with Azure using service principal
+        az login 
+        az aks get-credentials --resource-group sa1_test_eic_TejalDave --name test-roshni
+
+        # Deploy to Kubernetes
         kubectl apply -f $(k8sManifestsPath)/deploy.yaml -n $(k8sNamespace)
         kubectl apply -f $(k8sManifestsPath)/svc.yaml -n $(k8sNamespace)
+
       displayName: 'Deploy to Kubernetes cluster'
