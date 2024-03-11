@@ -9,9 +9,9 @@ variables:
   imageRepository: 'test' 
   tags: '$(Build.BuildId)'
   vmImage: 'ubuntu-latest'
-  acrLoginServer: 'roshniacr.azurecr.io'
-  acrUsername: '$(acrUsername)'  # Replace with your actual ACR username
-  acrPassword: '$(acrPassword)'  # Replace with your actual ACR password
+  acrLoginServer: 'roshniacr.azurecr.io'  # Use $(acrName) directly
+  acrUsername: 'roshniacr'  # Use $(acrName) directly
+  acrPassword: '0hMf0dVaG0ItqzkQYNnBeqTm0KreVbjG9RHn1Ky3zg+ACRA+1ULC' # Use $(acrPassword) directly
   k8sCluster: 'https://test-roshni.api.server'
   k8sNamespace: 'default'
   k8sManifestsPath: '$(Build.SourcesDirectory)/manifests'
@@ -26,9 +26,9 @@ stages:
       vmImage: $(vmImage)
     steps:
     - script: |
-        echo "$(acrPassword)" | docker login -u "$(acrUsername)" --password-stdin "$(acrLoginServer)"
-        docker build -f Dockerfile -t "$(acrLoginServer)/$(imageRepository):$(tags)" .
-        docker push "$(acrLoginServer)/$(imageRepository):$(tags)"
+        docker login -u $(acrUsername) -p $(acrPassword) $(acrLoginServer)
+        docker build -f Dockerfile -t $(acrLoginServer)/$(imageRepository):$(tags) .
+        docker push $(acrLoginServer)/$(imageRepository):$(tags)
       displayName: 'Build and Push'
 
 - stage: Deploy
