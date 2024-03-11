@@ -1,23 +1,46 @@
 trigger:
-- none
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  acrName: 'roshniacr'
+  imageRepository: 'rosy69092'
+  tags: '$(Build.BuildId)'
+  vmImage: 'ubuntu-latest'
+  acrLoginServer: 'roshniacr.azurecr.io'
+  acrUsername: 'roshniacr'
+  acrPassword: '0hMf0dVaG0ItqzkQYNnBeqTm0KreVbjG9RHn1Ky3zg+ACRA+1ULC'
+  k8sCluster: 'https://test-roshni.api.server'
+  k8sNamespace: 'default'
+  k8sManifestsPath: '$(Build.SourcesDirectory)/manifests'
 
 stages:
-- stage: First_Stage
+- stage: Build
+  displayName: 'Build stage'
   jobs:
-  - job: First_Stage_Job
-    pool: server
-    steps:
-    - task: ManualValidation@0
-      inputs:
-        notifyUsers: 'roshni.patel@einfochips.com'
-        instructions: 'Approve'
-  
-- stage: Second_Stage
-  dependsOn: First_Stage
-  jobs:
-  - job: Second_Stage_Job
+  - job: Build
+    displayName: 'Build'
     pool:
-      vmImage: 'ubuntu-latest'
+      vmImage: $(vmImage)
     steps:
-      - script: 
-         echo "Hello"
+    - script: |
+        docker login -u $(acrUsername) -p $(acrPassword) $(acrLoginServer)
+        docker build -f Dockerfile -t $(acrLoginServer)/$(imageRepository):$(tags) .
+        docker push $(acrLoginServer)/$(imageRepository):$(tags)
+      displayName: 'Build and Push'
+
+- stage: Deploy
+  displayName: 'Deploy stage'
+  dependsOn: Build
+  jobs:
+  - job: KubernetesDeploy
+    displayName: 'Kubernetes Deployment'
+    pool:
+      vmImage: $(vmImage)
+    steps:
+    - script: |
+        kubectl apply -f $(k8sManifestsPath)/deploy.yaml -n $(k8sNamespace)
+        kubectl apply -f $(k8sManifestsPath)/svc.yaml -n $(k8sNamespace)
+      displayName: 'Deploy to Kubernetes cluster'
